@@ -1,9 +1,11 @@
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
+import { grey } from '@mui/material/colors';
 
 import NoteEvent from "api/NoteEvent"
+import { Paper } from '@mui/material';
 
 type Props = {
   noteEvent: NoteEvent;
@@ -12,21 +14,17 @@ type Props = {
 export default function DateEventViewListItem(props:Props) {
   const noteEvent = props.noteEvent
   return (
-    <Grid container spacing={0}>
-      <Grid alignItems="center" item xs={7} sx={{ display: 'flex' }}>
-        <Avatar sx={{ width:32, height: 32 }} variant="rounded">
-          {noteEvent.date.getDate()}
-        </Avatar>
-        <Typography mx={1} >
-          <b>{noteEvent.title}</b>
-        </Typography>
-      </Grid>
-      <Grid item xs={5} sx={{ display: 'flex' }}>
-        <Divider orientation="vertical" flexItem />
-        <Typography mx={1}>
-          {noteEvent.text}
-        </Typography>
-      </Grid>
-    </Grid>
+    <Stack direction="row" alignItems="flex-end" sx={{width:1}} spacing={1} p={1} >
+      <Avatar sx={{ width:30, height: 30,fontSize:16 }} variant="rounded">
+        {noteEvent.date.getDate()}
+      </Avatar>
+      <Typography sx={{width:220}} noWrap >
+        {noteEvent.title}
+      </Typography>
+      
+      <Typography sx={{width:1}} variant="body2" color={grey[500]} mx={1} noWrap>
+        {noteEvent.text}
+      </Typography>
+    </Stack>
   );
 }
