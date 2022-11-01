@@ -7,10 +7,7 @@ import Typography from '@mui/material/Typography'
 import Slider from '@mui/material/Slider';
 import FormLabel from '@mui/material/FormLabel';
 
-function valueLabelFormat(value: number) {
-  const month = ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"]
-  return `${month[value]}`;
-}
+import monthText from "data/monthText"
 
 export default function DateEventSearch() {
   const [value, setValue] = useState<number[]>([6,8]);
@@ -27,13 +24,12 @@ export default function DateEventSearch() {
         <Paper elevation={0} sx={{p:'8px'}}>
           <FormLabel>月份</FormLabel>
           <Slider
-            getAriaLabel={() => 'Month range'}
+            getAriaLabel={() => 'Month'}
             value={value}
             onChange={handleChange}
-            aria-label="Month"
             defaultValue={10}
-            getAriaValueText={valueLabelFormat}
-            valueLabelFormat={valueLabelFormat}
+            getAriaValueText={value => monthText[value]}
+            valueLabelFormat={value => monthText[value]}
             valueLabelDisplay="auto"
             step={1}
             min={0}

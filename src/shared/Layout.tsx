@@ -3,8 +3,10 @@ import Paper from '@mui/material/Paper'
 import Stack from '@mui/material/Stack'
 
 import DateEventForm from 'feature/DateEventForm'
-import DateEventTable from 'feature/DateEventView'
+import DateEventView from 'feature/DateEventView'
 import DateEventSearch from 'feature/DateEventSearch'
+
+import noteEventListData from 'data/test1'
 
 export default function Layout() {
   return (
@@ -12,7 +14,7 @@ export default function Layout() {
       <Grid item xs={12} sm={12} md={7} lg={5}>
         <Stack spacing={2} p={1} >
           <DateEventSearch />
-          <DateEventTable />
+          <DateEventView noteEventList={noteEventListData}/>
         </Stack>
       </Grid>
       <Grid item xs={12} sm={12} md={5} lg={4}>
