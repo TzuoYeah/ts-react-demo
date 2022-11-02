@@ -8,9 +8,7 @@ export default function DateEventForm() {
   return (
     <Paper variant="outlined" sx={{p:'8px'}}>
       <Stack spacing={2} p={2}>
-            <Typography m={0} variant="h6" gutterBottom >
-              <b>編輯</b>
-            </Typography>
+        <Typography m={0} variant="h6" gutterBottom sx={{fontWeight:'bold'}}>編輯</Typography>
             <TextField label="標題" variant="standard" />
             <TextField
               label="日期"

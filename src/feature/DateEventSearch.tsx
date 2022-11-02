@@ -17,9 +17,7 @@ export default function DateEventSearch() {
 
   return (
     <Paper elevation={0} variant="outlined" sx={{p:'8px'}}>
-        <Typography m={0} variant="h6" gutterBottom >
-          <b>條件</b>
-        </Typography>
+      <Typography m={0} variant="h6" gutterBottom sx={{fontWeight:'bold'}}>條件</Typography>
         
         <Paper elevation={0} sx={{p:'8px'}}>
           <FormLabel>月份</FormLabel>

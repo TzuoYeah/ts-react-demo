@@ -21,12 +21,12 @@ const data:NoteEvent[] = [
         text: "內文內文內文"
     },
     {
-        date: getRandomDate(),
+        date: new Date(),
         title: "標題000",
         text: "內文內文內文內文"
     },
     {
-        date: getRandomDate(),
+        date: new Date(),
         title: "星期三下午去食藥處",
         text: "內文內文內文內文內文內文內文內內文內文內文內文內文內文內文內文內文內文文內文內文內文內文內文內文內文內文內文內文內文內文"
     }

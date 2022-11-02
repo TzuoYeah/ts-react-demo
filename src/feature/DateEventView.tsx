@@ -2,73 +2,42 @@
 
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import Pagination from '@mui/material/Pagination'
-import Stack from '@mui/material/Stack'
-import ListSubheader from '@mui/material/ListSubheader'
 
-import DateEventViewListItem from './DateEventView_ListItem'
+import DateEventViewList from 'subfrature/DateEventView_List'
 import NoteEvent from "api/NoteEvent"
-import monthText from "data/monthText"
-
 type Props = {
   noteEventList?: NoteEvent[];
+};
+type Group = {
+  month: number;
+  noteEventList: NoteEvent[];
 };
 
 function reduceNoteEventList(noteEventList:NoteEvent[]){
   return noteEventList.reduce((groupList,dateEvent)=>{
     const month = dateEvent.date.getMonth()
-    groupList[month] = groupList[month] || []
-    groupList[month].push(dateEvent)
+    const groupIndex = groupList.findIndex(element => element.month ===month)??0
+    if(groupIndex===-1)
+      groupList.push( {month,noteEventList:[dateEvent]})
+    else
+      groupList[groupIndex].noteEventList.push(dateEvent)
     return groupList
-  },new Array<NoteEvent[]>(12))
+  },new Array<Group>())
 }
 
-function sortMonthGroup(noteEventMonthGtoup:NoteEvent[][]){
-  noteEventMonthGtoup.forEach(element => element.sort((a,b) => a.date.getDate() - b.date.getDate() ));
+function sortMonthGroup(GroupList:Group[]){
+  GroupList.forEach(element => element.noteEventList.sort((a,b) => a.date.getDate() - b.date.getDate() ));
 }
 
 export default function DateEventView(props:Props) {
-  const noteEventMonthGtoup = props.noteEventList?reduceNoteEventList(props.noteEventList):[]
-  sortMonthGroup(noteEventMonthGtoup)
-
+  const GroupList = props.noteEventList?reduceNoteEventList(props.noteEventList):[]
+  sortMonthGroup(GroupList)  
   return (
     <Paper elevation={0} variant="outlined" sx={{p:'8px'}}>
-      <Typography m={0} variant="h6" gutterBottom >
-        <b>檢視</b>
-      </Typography>
-      {noteEventMonthGtoup.map((group,key1)=>
-        <List
-        key = {key1}
-        sx={{ width: '100%'}}
-        subheader={
-          <ListSubheader component="div" id="nested-list-subheader">
-            {monthText[key1]}
-          </ListSubheader>
-        }
-        >
-          {group.map((item,key2)=>
-            <ListItem key={key2} disablePadding>
-              <ListItemButton sx={{ display: 'flex' }}>
-                <DateEventViewListItem noteEvent={item}/>
-              </ListItemButton>
-            </ListItem>
-          )}
-        </List>
-      )}      
-      <Stack
-        direction="row"
-        justifyContent="flex-end"
-        alignItems="center"
-        spacing={0}
-        px={2}
-      >
-        頁數：
-        <Pagination count={3} />
-      </Stack>
-
+      <Typography m={0} variant="h6" gutterBottom sx={{fontWeight:'bold'}}>檢視</Typography>
+      {GroupList.map((group,key)=>
+        <DateEventViewList month={group.month} noteEventList={group.noteEventList} key={key}/>
+      )}
     </Paper>
   );
 }
