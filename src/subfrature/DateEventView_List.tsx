@@ -12,6 +12,7 @@ type Props = {
 };
 
 export default function DateEventView_List(props:Props) {
+  let tempDate = 0
   return (
     <List
     sx={{ width: '100%'}}
@@ -21,9 +22,12 @@ export default function DateEventView_List(props:Props) {
       </ListSubheader>
     }
     >
-      {props.noteEventList.map((item,key)=>
-        <DateEventViewListItem noteEvent={item} key={key}/>
-      )}
+      {props.noteEventList.map((item,key)=>{
+        let nextDate:number = item.date.getDate()
+        let showDate = tempDate!==nextDate
+        if(tempDate!=nextDate) tempDate = nextDate
+        return <DateEventViewListItem noteEvent={item} key={key} showDate={showDate}/>
+      })}
     </List>
   );
 }

@@ -10,15 +10,16 @@ import ListItemText from '@mui/material/ListItemText'
 
 type Props = {
   noteEvent: NoteEvent;
+  showDate?: Boolean;
 };
 
-export default function DateEventViewListItem(props:Props) {
-  const noteEvent = props.noteEvent
+export default function DateEventViewListItem({noteEvent,showDate=true}:Props) {
+  const dateVisibility = showDate?{}:{ visibility: 'hidden' }
   return (
   <ListItem disablePadding>
     <ListItemButton sx={{ display: 'flex' }}>
       <Stack direction="row" alignItems="center" sx={{width:1}} spacing={1} p={1} >
-        <Avatar variant="rounded">
+        <Avatar variant="rounded" sx={dateVisibility}>
           {noteEvent.date.getDate()}
         </Avatar>
         <ListItemText

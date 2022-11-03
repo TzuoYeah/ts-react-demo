@@ -1,6 +1,8 @@
 import Grid from '@mui/material/Grid'
-import Paper from '@mui/material/Paper'
 import Stack from '@mui/material/Stack'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Button from '@mui/material/Button'
 
 import DateEventForm from 'feature/DateEventForm'
 import DateEventView from 'feature/DateEventView'
@@ -10,22 +12,31 @@ import noteEventListData from 'data/test1'
 
 export default function Layout() {
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={12} md={7} lg={5}>
-        <Stack spacing={2} p={1} >
-          <DateEventSearch />
-          <DateEventView noteEventList={noteEventListData}/>
-        </Stack>
+    <Container maxWidth="lg">
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={12} md={7} lg={3}>
+          <Stack spacing={2} p={1} >
+          </Stack>
+        </Grid>
+        <Grid item xs={12} sm={12} md={5} lg={6}>
+          <Box p={1}>
+            <Stack
+              direction="row"
+              justifyContent="flex-end"
+              alignItems="center"
+              spacing={2}
+              my={2}
+            >
+            <Button variant="text">新增記事</Button>
+            </Stack>
+            <DateEventView noteEventList={noteEventListData}/>
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12} lg={3}>
+          <Box p={1}>
+          </Box>
+        </Grid>
       </Grid>
-      <Grid item xs={12} sm={12} md={5} lg={4}>
-        <Stack spacing={2} p={1} >
-          <DateEventForm />
-        </Stack>
-      </Grid>
-      <Grid item xs={12} sm={12} md={12} lg={3}>
-        <Paper variant="outlined">
-        </Paper>
-      </Grid>
-    </Grid>
+    </Container>
   )
 }
