@@ -1,4 +1,4 @@
-import {useState,MouseEvent} from 'react'
+import {useState,MouseEvent,Dispatch,SetStateAction} from 'react'
 import Stack from '@mui/material/Stack'
 
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
@@ -6,7 +6,7 @@ import ToggleButton from '@mui/material/ToggleButton'
 
 // #region Types
 type Props = {
-  setViewSate: React.Dispatch<React.SetStateAction<string>>
+  setViewSate: Dispatch<SetStateAction<string>>
 }
 
 

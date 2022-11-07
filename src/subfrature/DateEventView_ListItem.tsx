@@ -6,9 +6,13 @@ import ListItemButton from '@mui/material/ListItemButton'
 import Chip from '@mui/material/Chip'
 import {weekDayText} from "data/DateText"
 import { grey,orange } from '@mui/material/colors'
+import IconButton from '@mui/material/IconButton'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 import {NoteEvent} from "api/NoteEvent"
 import ListItemText from '@mui/material/ListItemText'
+
+import OptionButton from "subfrature/DateEventView_OptionButton"
 
 // #region Types
 type Props = {
@@ -29,7 +33,12 @@ export default function DateEventViewListItem({noteEvent,showDate=true}:Props) {
   if(checkDateWithin(noteEvent.date,7)) avatarVariant.bgcolor = orange[500]
 
   return (
-  <ListItem disablePadding>
+  <ListItem 
+  secondaryAction={
+    <OptionButton />
+  }
+  disablePadding
+  >
     <ListItemButton sx={{ display: 'flex' }}>
       <Stack direction="row" alignItems="center" sx={{width:1}} spacing={1} p={1} >
         <Avatar

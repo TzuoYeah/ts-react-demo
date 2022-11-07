@@ -35,7 +35,7 @@ export default function Layout() {
         </Grid>
         <Grid item xs={12} sm={12} md={3} lg={3}>
           <Box p={1}>
-            <DateEventEditor />
+            <DateEventEditor setData={setData}/>
           </Box>
         </Grid>
       </Grid>

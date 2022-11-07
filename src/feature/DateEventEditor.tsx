@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState,Dispatch,SetStateAction} from 'react'
 import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AddIcon from '@mui/icons-material/Add'
@@ -20,10 +20,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
-import {NoteEvent,NoteEventPost} from "api/NoteEvent"
+import {NoteEvent,NoteEventPost,NoteEventGetAll,NoteEventMapping}from "api/NoteEvent"
 
+type Props={
+  setData:Dispatch<SetStateAction<NoteEvent[]>>
+}
 
-export default function DateEventEditor() {
+export default function DateEventEditor({setData}:Props) {
   const [dateValue, setDateValue] = useState<Dayjs | null>(dayjs())
   const [titleValue, setTitleValue] = useState<string>('')
   const [textValue, setTextValue] = useState<string>('')
@@ -43,7 +46,12 @@ export default function DateEventEditor() {
       date:dateValue?.toDate()??new Date(),
       state:stateValue
     } as NoteEvent)
-    if('ok' in await response) setSnackbarSuccessOpen(true)
+    if('ok' in await response){
+      NoteEventGetAll().then(data =>
+        setData(NoteEventMapping(data))
+      )
+      setSnackbarSuccessOpen(true)
+    }
     else setSnackbarErrorOpen(true)
   }
     
