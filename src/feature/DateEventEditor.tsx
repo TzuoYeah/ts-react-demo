@@ -1,4 +1,4 @@
-import {useState,Dispatch,SetStateAction} from 'react'
+import {useState} from 'react'
 import Accordion from '@mui/material/Accordion'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import AddIcon from '@mui/icons-material/Add'
@@ -15,25 +15,33 @@ import Button from '@mui/material/Button'
 import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
 
-import dayjs, { Dayjs } from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import dayjs, { Dayjs } from 'dayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 
-import {NoteEvent,NoteEventPost,NoteEventGetAll,NoteEventMapping}from "api/NoteEvent"
+import {NoteEvent,NoteEventPost}from "api/NoteEvent"
+import {useData} from 'hook/DataUpdate'
 
-type Props={
-  setData:Dispatch<SetStateAction<NoteEvent[]>>
+// #region Props
+type SnackbarSetPorps={
+  snackbarSuccessOpen:boolean
+  handleSnackbarSuccessClose:(event: React.SyntheticEvent | Event, reason?: string) => void
+  snackbarErrorOpen:boolean
+  handleSnackbarErrorClose:(event: React.SyntheticEvent | Event, reason?: string) => void
 }
+// #endregion
 
-export default function DateEventEditor({setData}:Props) {
+export default function DateEventEditor() {
   const [dateValue, setDateValue] = useState<Dayjs | null>(dayjs())
   const [titleValue, setTitleValue] = useState<string>('')
   const [textValue, setTextValue] = useState<string>('')
   const [stateValue, setStateValue] = useState<string>('todo')
   
-  const [snackbarSuccessOpen, setSnackbarSuccessOpen] = useState(false);
-  const [snackbarErrorOpen, setSnackbarErrorOpen] = useState(false);
+  const [snackbarSuccessOpen, setSnackbarSuccessOpen] = useState(false)
+  const [snackbarErrorOpen, setSnackbarErrorOpen] = useState(false)
+
+  const data = useData()
 
   const handleDateChange = (newValue: Dayjs | null) => setDateValue(newValue)
   const handleTitleChange =  (event: React.ChangeEvent<HTMLInputElement>) => setTitleValue(event.target.value)
@@ -43,18 +51,17 @@ export default function DateEventEditor({setData}:Props) {
     const response = NoteEventPost({
       title:titleValue,
       text:textValue,
-      date:dateValue?.toDate()??new Date(),
+      date:dateValue?.format('YYYY-MM-DD')??new Date(),
       state:stateValue
     } as NoteEvent)
     if('ok' in await response){
-      NoteEventGetAll().then(data =>
-        setData(NoteEventMapping(data))
-      )
+      data.getData()
       setSnackbarSuccessOpen(true)
     }
     else setSnackbarErrorOpen(true)
   }
-    
+  // #region Snackbar
+
   const handleSnackbarSuccessClose = (event: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') return
     setSnackbarSuccessOpen(false)
@@ -63,6 +70,8 @@ export default function DateEventEditor({setData}:Props) {
     if (reason === 'clickaway') return
     setSnackbarErrorOpen(false)
   }
+
+  // #endregion
 
   return (
     <Accordion>
@@ -126,18 +135,32 @@ export default function DateEventEditor({setData}:Props) {
         </Stack>
       </AccordionDetails>
 
-      <Snackbar open={snackbarSuccessOpen} autoHideDuration={6000} onClose={handleSnackbarSuccessClose}>
-        <Alert onClose={handleSnackbarSuccessClose} severity="success" sx={{ width: '100%' }}>
-          送出成功
-        </Alert>
-      </Snackbar>
+      <SnackbarSet
+        snackbarSuccessOpen={snackbarSuccessOpen}
+        handleSnackbarSuccessClose={handleSnackbarSuccessClose}
+        snackbarErrorOpen={snackbarErrorOpen}
+        handleSnackbarErrorClose={handleSnackbarErrorClose}
+      />
       
-      <Snackbar open={snackbarErrorOpen} autoHideDuration={6000} onClose={handleSnackbarErrorClose}>
-        <Alert onClose={handleSnackbarErrorClose} severity="error" sx={{ width: '100%' }}>
-          送出失敗
-        </Alert>
-      </Snackbar>
-
     </Accordion>
   )
+}
+
+/**
+ * Snackbar的設定
+ */
+function SnackbarSet(porps:SnackbarSetPorps):JSX.Element{
+  return<>
+    <Snackbar open={porps.snackbarSuccessOpen} autoHideDuration={6000} onClose={porps.handleSnackbarSuccessClose}>
+      <Alert onClose={porps.handleSnackbarSuccessClose} severity="success" sx={{ width: '100%' }}>
+        送出成功
+      </Alert>
+    </Snackbar>
+    
+    <Snackbar open={porps.snackbarErrorOpen} autoHideDuration={6000} onClose={porps.handleSnackbarErrorClose}>
+      <Alert onClose={porps.handleSnackbarErrorClose} severity="error" sx={{ width: '100%' }}>
+        送出失敗
+      </Alert>
+    </Snackbar>
+  </>
 }

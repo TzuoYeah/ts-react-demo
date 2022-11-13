@@ -10,22 +10,46 @@ import ArchiveIcon from '@mui/icons-material/Archive'
 import Stack from '@mui/material/Stack'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
+import {NoteEventDelete}from "api/NoteEvent"
+
+import {useData} from 'hook/DataUpdate'
 
 // #region Types
 type Props = {
+  id:string
 }
-
+type MenuItemProps = {
+  type:string
+  handleFunction:()=>void
+}
 // #endregion
 
-export default function DateEventViewOptionButton() {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+export default function DateEventViewOptionButton({id}:Props) {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const data = useData()
+  
+  const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleClose = async (type:string) => {
+    switch(type){
+      case 'delete':
+        const deleteEvenet = NoteEventDelete(id)
+        if('ok' in await deleteEvenet){
+          data.getData()
+          //setSnackbarSuccessOpen(true)
+        }
+        else{
+          //setSnackbarErrorOpen(true)
+        }
+        
+        break
+      default:
+    }
+
     setAnchorEl(null);
-  };
+  }
 
   return (
     <>
@@ -48,42 +72,57 @@ export default function DateEventViewOptionButton() {
         'aria-labelledby': 'basic-button',
       }}
     >
-      <MenuItem onClick={handleClose}>
-        <Stack direction="row" alignItems="center" spacing={1} >
-          <EditIcon />
-          <label>編輯</label>
-        </Stack>
-      </MenuItem>
-      <MenuItem onClick={handleClose}>
-        <Stack direction="row" alignItems="center" spacing={1} >
-          <DeleteIcon />
-          <label>刪除</label>
-        </Stack>
-      </MenuItem>
-      <MenuItem onClick={handleClose}>
-        <Stack direction="row" alignItems="center" spacing={1} >
-          <DoneIcon />
-          <label>Done</label>        
-        </Stack>
-      </MenuItem>
-      <MenuItem onClick={handleClose}>
-        <Stack direction="row" alignItems="center" spacing={1} >
-          <AlarmIcon />
-          <label>Doing</label>        
-        </Stack>
-      </MenuItem>
-      <MenuItem onClick={handleClose}>
-        <Stack direction="row" alignItems="center" spacing={1} >
-          <EventNoteIcon />
-          <label>ToDo</label>
-        </Stack>
-      </MenuItem>
-      <MenuItem onClick={handleClose}>
-        <Stack direction="row" alignItems="center" spacing={1} >
-          <ArchiveIcon />
-          <label>封存</label>
-        </Stack>
-      </MenuItem>
+      <OptionMenuItem type={'edit'} handleFunction={() => handleClose('edit')}/>
+      <OptionMenuItem type={'delete'} handleFunction={() => handleClose('delete')}/>
+      <OptionMenuItem type={'todo'} handleFunction={() => handleClose('todo')}/>
+      <OptionMenuItem type={'doing'} handleFunction={() => handleClose('doing')}/>
+      <OptionMenuItem type={'done'} handleFunction={() => handleClose('done')}/>
+      <OptionMenuItem type={'store'} handleFunction={() => handleClose('store')}/>
     </Menu>
     </>
   )}
+
+/**
+ * 選單按鈕
+ */
+ function OptionMenuItem({type,handleFunction}:MenuItemProps):JSX.Element {
+  let icon:JSX.Element
+  let label:JSX.Element
+
+  switch(type){
+    case 'edit':
+      icon = <EditIcon />
+      label = <label>編輯</label>
+      break
+    case 'delete':
+      icon = <DeleteIcon />
+      label = <label>刪除</label>
+      break
+    case 'done':
+      icon = <DoneIcon />
+      label = <label>Done</label>
+      break
+    case 'doing':
+      icon = <AlarmIcon />
+      label = <label>Doing</label>
+      break
+    case 'todo':
+      icon = <EventNoteIcon />
+      label = <label>ToDo</label>
+      break
+    case 'store':
+      icon = <ArchiveIcon />
+      label = <label>封存</label>
+      break
+    default:
+      return <></>
+  }
+
+  return <MenuItem onClick={handleFunction}>
+    <Stack direction="row" alignItems="center" spacing={1} >
+      {icon}
+      {label}
+    </Stack>
+  </MenuItem>
+
+}

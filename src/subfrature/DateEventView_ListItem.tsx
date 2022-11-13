@@ -6,8 +6,6 @@ import ListItemButton from '@mui/material/ListItemButton'
 import Chip from '@mui/material/Chip'
 import {weekDayText} from "data/DateText"
 import { grey,orange } from '@mui/material/colors'
-import IconButton from '@mui/material/IconButton'
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 import {NoteEvent} from "api/NoteEvent"
 import ListItemText from '@mui/material/ListItemText'
@@ -35,7 +33,7 @@ export default function DateEventViewListItem({noteEvent,showDate=true}:Props) {
   return (
   <ListItem 
   secondaryAction={
-    <OptionButton />
+    <OptionButton id={noteEvent.id}/>
   }
   disablePadding
   >

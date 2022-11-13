@@ -1,4 +1,3 @@
-//import {useState} from 'react'
 import ListSubheader from '@mui/material/ListSubheader'
 
 import DateEventViewListItem from 'subfrature/DateEventView_ListItem'
@@ -8,7 +7,7 @@ import {monthText} from "data/DateText"
 // #region Types
 type Props = {
   month: number
-  noteEventList: NoteEvent[]
+  dateEventData: NoteEvent[]
 }
 
 // #endregion
@@ -18,7 +17,7 @@ export default function DateEventView_List(props:Props) {
   return (
     <>
       <ListSubheader>{monthText[props.month]}</ListSubheader>
-      {props.noteEventList.map((item,key)=>{
+      {props.dateEventData.map((item,key)=>{
         let nextDate:number = item.date.getDate()
         let showDate = tempDate!==nextDate
         if(tempDate!==nextDate) tempDate = nextDate

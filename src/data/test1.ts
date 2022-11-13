@@ -12,72 +12,72 @@ function randomText() {
   
 const getRandomDate =()=> randomDate(new Date(2022, 0, 1), new Date());
 const data:NoteEvent[] = [
-    {
-        date: getRandomDate(),
-        title: "標題",
-        text: randomText(),
-        state:"todo"
-    },
-    {
-        date: getRandomDate(),
-        title: "標題",
-        text: randomText(),
-        state:"todo"
-    },
-    {
-        date: getRandomDate(),
-        title: "標題",
-        text: randomText(),
-        state:"todo"
-    },
-    {
-        date: getRandomDate(),
-        title: "標題",
-        text: randomText(),
-        state:"doing"
-    },
-    {
-        date: new Date(),
-        title: "標題標題",
-        text: randomText(),
-        state:"doing"
-    },
-    {
-        date: new Date(),
-        title: "標題題標題標題",
-        text: "內文內文內文內文內文內文內文內內文內內文內文內文內文內文內文內文內文內文內文文內文內文內文內文內文內文內文內文內文內文內文內文",
-        state:"doing"
-    },
-    {
-        date: new Date('2022-11-11T00:00:00'),
-        title: "測試11",
-        text: randomText(),
-        state:"doing"
-    },
-    {
-        date: new Date('2022-11-12T00:00:00'),
-        title: "測試12ˋ",
-        text: randomText(),
-        state:"doing"
-    },
-    {
-        date: new Date('2022-11-13T00:00:00'),
-        title: "測試13ˋ",
-        text: randomText(),
-        state:"doing"
-    },
-    {
-        date: getRandomDate(),
-        title: "標題",
-        text: randomText(),
-        state:"done"
-    },
-    {
-        date: getRandomDate(),
-        title: "標題",
-        text: randomText(),
-        state:"done"
-    }
+    // {
+    //     date: getRandomDate(),
+    //     title: "標題",
+    //     text: randomText(),
+    //     state:"todo"
+    // },
+    // {
+    //     date: getRandomDate(),
+    //     title: "標題",
+    //     text: randomText(),
+    //     state:"todo"
+    // },
+    // {
+    //     date: getRandomDate(),
+    //     title: "標題",
+    //     text: randomText(),
+    //     state:"todo"
+    // },
+    // {
+    //     date: getRandomDate(),
+    //     title: "標題",
+    //     text: randomText(),
+    //     state:"doing"
+    // },
+    // {
+    //     date: new Date(),
+    //     title: "標題標題",
+    //     text: randomText(),
+    //     state:"doing"
+    // },
+    // {
+    //     date: new Date(),
+    //     title: "標題題標題標題",
+    //     text: "內文內文內文內文內文內文內文內內文內內文內文內文內文內文內文內文內文內文內文文內文內文內文內文內文內文內文內文內文內文內文內文",
+    //     state:"doing"
+    // },
+    // {
+    //     date: new Date('2022-11-11T00:00:00'),
+    //     title: "測試11",
+    //     text: randomText(),
+    //     state:"doing"
+    // },
+    // {
+    //     date: new Date('2022-11-12T00:00:00'),
+    //     title: "測試12ˋ",
+    //     text: randomText(),
+    //     state:"doing"
+    // },
+    // {
+    //     date: new Date('2022-11-13T00:00:00'),
+    //     title: "測試13ˋ",
+    //     text: randomText(),
+    //     state:"doing"
+    // },
+    // {
+    //     date: getRandomDate(),
+    //     title: "標題",
+    //     text: randomText(),
+    //     state:"done"
+    // },
+    // {
+    //     date: getRandomDate(),
+    //     title: "標題",
+    //     text: randomText(),
+    //     state:"done"
+    // }
 ]
 
 export default data

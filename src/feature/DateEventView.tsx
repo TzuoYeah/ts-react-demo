@@ -7,23 +7,24 @@ import {NoteEvent} from "api/NoteEvent"
 
 // #region Types
 type Props = {
-  noteEventList: NoteEvent[]
+  dateEventData: NoteEvent[]
   viewSate:string
 }
 
 type Group = {
   month: number
-  noteEventList: NoteEvent[]
+  dateEventData: NoteEvent[]
 }
 // #endregion
 
 /**
  * DateEven的清單
  */
-export default function DateEventView({noteEventList,viewSate='doing'}:Props) {
-  const stateList = getStateList(noteEventList,viewSate)
-  const groupList = reduceNoteEventList(stateList)
+export default function DateEventView({dateEventData,viewSate='doing'}:Props) {
+  const stateList = getStateList(dateEventData,viewSate)
+  const groupList = reduceDateEventData(stateList)
   sortMonthGroup(groupList)
+  
 
   return (
     <Paper elevation={0} variant="outlined" sx={{p:'8px'}}>
@@ -40,7 +41,7 @@ export default function DateEventView({noteEventList,viewSate='doing'}:Props) {
         {groupList.map((group,key)=>
           <li  key={key}>
             <ul>
-              <DateEventViewList month={group.month} noteEventList={group.noteEventList}/>
+              <DateEventViewList month={group.month} dateEventData={group.dateEventData}/>
             </ul>
           </li>
         )}
@@ -52,14 +53,14 @@ export default function DateEventView({noteEventList,viewSate='doing'}:Props) {
 /**
  * 將無序的NoteEvent陣列轉成以月份為群組的Group陣列
  */
- function reduceNoteEventList(noteEventList:NoteEvent[]):Group[]{
-  return noteEventList.reduce((groupList,dateEvent)=>{
+ function reduceDateEventData(dateEventData:NoteEvent[]):Group[]{
+  return dateEventData.reduce((groupList,dateEvent)=>{
     const month = dateEvent.date.getMonth()
     const groupIndex = groupList.findIndex(element => element.month ===month)??0
     if(groupIndex===-1)
-      groupList.push( {month,noteEventList:[dateEvent]})
+      groupList.push( {month,dateEventData:[dateEvent]})
     else
-      groupList[groupIndex].noteEventList.push(dateEvent)
+      groupList[groupIndex].dateEventData.push(dateEvent)
     return groupList
   },new Array<Group>())
 }
@@ -68,14 +69,14 @@ export default function DateEventView({noteEventList,viewSate='doing'}:Props) {
  * 將Group陣列中的NoteEvent以日期做排序
  */
 function sortMonthGroup(GroupList:Group[]){
-  GroupList.forEach(element => element.noteEventList.sort((a,b) => a.date.getDate() - b.date.getDate() ));
+  GroupList.forEach(element => element.dateEventData.sort((a,b) => a.date.getDate() - b.date.getDate() ));
 }
 
 /**
  * 取得符合狀態的NoteEvent陣列
  */
-function getStateList(noteEventList:NoteEvent[],state:string){
-  return noteEventList.reduce((groupList,dateEvent)=>{
+function getStateList(dateEventData:NoteEvent[],state:string){
+  return dateEventData.reduce((groupList,dateEvent)=>{
     if(dateEvent.state === state) groupList.push(dateEvent)
     return groupList
   },new Array<NoteEvent>())

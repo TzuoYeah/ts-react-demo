@@ -1,6 +1,7 @@
 const API_URL = `${process.env.REACT_APP_API_URL }dateevent`
 
 export interface NoteEvent {
+    id:string
     date: Date
     title: string
     text: string
@@ -8,7 +9,7 @@ export interface NoteEvent {
 }
 
 /**
- * 取得NoteEvent所有資料
+ * NoteEvent資料轉換顯示
  * @returns 
  */
  export function NoteEventMapping(data:any[]):NoteEvent[]{
@@ -16,6 +17,7 @@ export interface NoteEvent {
   
   data.forEach(item =>{
     result.push({
+      id: item.id??'',
       date: new Date(item.date)??new Date(),
       title: item.title??'',
       text: item.text??'',
@@ -49,6 +51,18 @@ export function NoteEventPost(data:NoteEvent){
       'Content-Type': 'application/json'
     },
     method: 'POST',
+  })
+  .then(response => response)
+  .catch(error => error)
+}
+/**
+ * 刪除NoteEvent資料
+ * @param data NoteEvent資料
+ * @returns 
+ */
+export function NoteEventDelete(id:string){
+  return fetch(`${API_URL}/${id}`, {
+    method: 'DELETE',
   })
   .then(response => response)
   .catch(error => error)
