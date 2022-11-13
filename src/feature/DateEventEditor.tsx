@@ -12,8 +12,6 @@ import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Radio from '@mui/material/Radio'
 import Button from '@mui/material/Button'
-import Snackbar from '@mui/material/Snackbar'
-import Alert from '@mui/material/Alert'
 
 import dayjs, { Dayjs } from 'dayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -22,14 +20,9 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 
 import {NoteEvent,NoteEventPost}from "api/NoteEvent"
 import {useData} from 'hook/DataUpdate'
+import {useSnackbar} from 'hook/HandleSnackbar'
 
 // #region Props
-type SnackbarSetPorps={
-  snackbarSuccessOpen:boolean
-  handleSnackbarSuccessClose:(event: React.SyntheticEvent | Event, reason?: string) => void
-  snackbarErrorOpen:boolean
-  handleSnackbarErrorClose:(event: React.SyntheticEvent | Event, reason?: string) => void
-}
 // #endregion
 
 export default function DateEventEditor() {
@@ -37,11 +30,8 @@ export default function DateEventEditor() {
   const [titleValue, setTitleValue] = useState<string>('')
   const [textValue, setTextValue] = useState<string>('')
   const [stateValue, setStateValue] = useState<string>('todo')
-  
-  const [snackbarSuccessOpen, setSnackbarSuccessOpen] = useState(false)
-  const [snackbarErrorOpen, setSnackbarErrorOpen] = useState(false)
-
   const data = useData()
+  const snackbar = useSnackbar()
 
   const handleDateChange = (newValue: Dayjs | null) => setDateValue(newValue)
   const handleTitleChange =  (event: React.ChangeEvent<HTMLInputElement>) => setTitleValue(event.target.value)
@@ -56,22 +46,10 @@ export default function DateEventEditor() {
     } as NoteEvent)
     if('ok' in await response){
       data.getData()
-      setSnackbarSuccessOpen(true)
+      snackbar.ShowCreateSuccess()
     }
-    else setSnackbarErrorOpen(true)
+    else snackbar.ShowCreateError()
   }
-  // #region Snackbar
-
-  const handleSnackbarSuccessClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') return
-    setSnackbarSuccessOpen(false)
-  }
-  const handleSnackbarErrorClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') return
-    setSnackbarErrorOpen(false)
-  }
-
-  // #endregion
 
   return (
     <Accordion>
@@ -133,34 +111,7 @@ export default function DateEventEditor() {
               <Button variant="contained" onClick={handleSubmit}>送出</Button>
             </Stack>
         </Stack>
-      </AccordionDetails>
-
-      <SnackbarSet
-        snackbarSuccessOpen={snackbarSuccessOpen}
-        handleSnackbarSuccessClose={handleSnackbarSuccessClose}
-        snackbarErrorOpen={snackbarErrorOpen}
-        handleSnackbarErrorClose={handleSnackbarErrorClose}
-      />
-      
+      </AccordionDetails>      
     </Accordion>
   )
-}
-
-/**
- * Snackbar的設定
- */
-function SnackbarSet(porps:SnackbarSetPorps):JSX.Element{
-  return<>
-    <Snackbar open={porps.snackbarSuccessOpen} autoHideDuration={6000} onClose={porps.handleSnackbarSuccessClose}>
-      <Alert onClose={porps.handleSnackbarSuccessClose} severity="success" sx={{ width: '100%' }}>
-        送出成功
-      </Alert>
-    </Snackbar>
-    
-    <Snackbar open={porps.snackbarErrorOpen} autoHideDuration={6000} onClose={porps.handleSnackbarErrorClose}>
-      <Alert onClose={porps.handleSnackbarErrorClose} severity="error" sx={{ width: '100%' }}>
-        送出失敗
-      </Alert>
-    </Snackbar>
-  </>
 }

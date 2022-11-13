@@ -13,6 +13,7 @@ import MenuItem from '@mui/material/MenuItem'
 import {NoteEventDelete}from "api/NoteEvent"
 
 import {useData} from 'hook/DataUpdate'
+import {useSnackbar} from 'hook/HandleSnackbar'
 
 // #region Types
 type Props = {
@@ -27,22 +28,26 @@ type MenuItemProps = {
 export default function DateEventViewOptionButton({id}:Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const data = useData()
+  const snackbar = useSnackbar()
   
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
+
   const handleClose = async (type:string) => {
     switch(type){
       case 'delete':
         const deleteEvenet = NoteEventDelete(id)
-        if('ok' in await deleteEvenet){
-          data.getData()
-          //setSnackbarSuccessOpen(true)
-        }
-        else{
-          //setSnackbarErrorOpen(true)
-        }
+        deleteEvenet.then(res =>{
+          if('ok' in res){
+            data.getData()
+            snackbar.ShowDeleteSuccess()
+          }
+          else{
+            //setSnackbarErrorOpen(true)
+          }
+        })
         
         break
       default:

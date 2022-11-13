@@ -16,8 +16,8 @@ export default function Layout() {
   const data = useData()
   useEffect(() => {data.getData()}, [])
 
-  return (
-      <Container maxWidth="lg">
+  return (<>  
+    <Container maxWidth="lg">
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12} md={3} lg={3}>
             <Stack spacing={2} p={1} >
@@ -36,5 +36,6 @@ export default function Layout() {
           </Grid>
         </Grid>
       </Container>
+  </>
   )
 }
