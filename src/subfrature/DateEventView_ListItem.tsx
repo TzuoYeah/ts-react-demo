@@ -33,7 +33,7 @@ export default function DateEventViewListItem({noteEvent,showDate=true}:Props) {
   return (
   <ListItem 
   secondaryAction={
-    <OptionButton id={noteEvent.id}/>
+    <OptionButton noteEvent={noteEvent}/>
   }
   disablePadding
   >

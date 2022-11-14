@@ -5,15 +5,18 @@ import Stack from '@mui/material/Stack'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 
+import Button from '@mui/material/Button';
+
 import DateEventView from 'feature/DateEventView'
 import DateEventToolBar from 'feature/DateEventToolBar'
-import DateEventEditor from 'feature/DateEventEditor'
 
 import {useData} from 'hook/DataUpdate'
+import {useMedal} from 'hook/HandleMedal'
 
 export default function Layout() {
   const [viewSate,setViewSate] = useState('doing')  
   const data = useData()
+  const medal = useMedal()
   useEffect(() => {data.getData()}, [])
 
   return (<>  
@@ -30,9 +33,7 @@ export default function Layout() {
             </Box>
           </Grid>
           <Grid item xs={12} sm={12} md={3} lg={3}>
-            <Box p={1}>
-              <DateEventEditor/>
-            </Box>
+            <Button onClick={medal.showCreate}>新增內容</Button>
           </Grid>
         </Grid>
       </Container>

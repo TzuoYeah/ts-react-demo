@@ -10,14 +10,15 @@ import ArchiveIcon from '@mui/icons-material/Archive'
 import Stack from '@mui/material/Stack'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import {NoteEventDelete}from "api/NoteEvent"
+import {NoteEvent,NoteEventDelete}from "api/NoteEvent"
 
 import {useData} from 'hook/DataUpdate'
 import {useSnackbar} from 'hook/HandleSnackbar'
+import {useMedal} from 'hook/HandleMedal'
 
 // #region Types
 type Props = {
-  id:string
+  noteEvent: NoteEvent
 }
 type MenuItemProps = {
   type:string
@@ -25,10 +26,11 @@ type MenuItemProps = {
 }
 // #endregion
 
-export default function DateEventViewOptionButton({id}:Props) {
+export default function DateEventViewOptionButton({noteEvent}:Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const data = useData()
   const snackbar = useSnackbar()
+  const medal = useMedal()
   
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -38,16 +40,20 @@ export default function DateEventViewOptionButton({id}:Props) {
   const handleClose = async (type:string) => {
     switch(type){
       case 'delete':
-        const deleteEvenet = NoteEventDelete(id)
+        const deleteEvenet = NoteEventDelete(noteEvent.id)
         deleteEvenet.then(res =>{
           if('ok' in res){
             data.getData()
             snackbar.ShowDeleteSuccess()
           }
           else{
-            //setSnackbarErrorOpen(true)
+            snackbar.ShowDeleteError()
           }
         })
+        
+        break
+      case 'edit':
+        medal.showEdit(noteEvent)
         
         break
       default:

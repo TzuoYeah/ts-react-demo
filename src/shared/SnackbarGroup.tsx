@@ -13,13 +13,15 @@ import Alert from '@mui/material/Alert'
 // #endregion
 
 export default function SnackbarGroup() {
-    const snackbar = useSnackbar()
+  const snackbar = useSnackbar()
   return (
       <HandleSnackbar>
         <SnackbarItem text={'刪除成功'} isOpen={snackbar.deleteSuccessOpen} handleClose={snackbar.handleDeleteSuccessClose} type={'success'}/>
         <SnackbarItem text={'刪除失敗'} isOpen={snackbar.deleteErrorOpen} handleClose={snackbar.handleDeleteErrorClose} type={'error'}/>
         <SnackbarItem text={'送出成功'} isOpen={snackbar.createSuccessOpen} handleClose={snackbar.handleCreateSuccessClose} type={'success'}/>
         <SnackbarItem text={'送出失敗'} isOpen={snackbar.createErrorOpen} handleClose={snackbar.handleCreateErrorClose} type={'error'}/>
+        <SnackbarItem text={'更新成功'} isOpen={snackbar.editSuccessOpen} handleClose={snackbar.handleEditSuccessClose} type={'success'}/>
+        <SnackbarItem text={'更新失敗'} isOpen={snackbar.editErrorOpen} handleClose={snackbar.handleEditErrorClose} type={'error'}/>
       </HandleSnackbar>
   )
 }

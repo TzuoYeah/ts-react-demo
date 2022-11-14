@@ -55,6 +55,25 @@ export function NoteEventPost(data:NoteEvent){
   .then(response => response)
   .catch(error => error)
 }
+
+/**
+ * 新增NoteEvent資料
+ * @param data NoteEvent資料
+ * @returns 
+ */
+ export function NoteEventPatch(id:string|undefined,data:NoteEvent){
+  if(id===undefined) return
+  return fetch(`${API_URL}/${id}`, {
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'PATCH',
+  })
+  .then(response => response)
+  .catch(error => error)
+}
+
 /**
  * 刪除NoteEvent資料
  * @param data NoteEvent資料
